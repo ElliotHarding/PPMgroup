@@ -1,0 +1,110 @@
+﻿body {
+    
+}
+#navbar a {
+    display: block;
+    color: white;
+    text-shadow: 6px 6px 5px white;
+    text-align: center;
+    padding: 20px 40px;
+    text-shadow: 3px 3px 2px black;
+    text-decoration: none;
+    box-shadow: 5px 5px 3px white;
+    border-radius: 5px 15px 0px 0px;
+    border: 10px;
+}
+li {
+    float: left; /*align the buttons to the left of the page */
+}
+
+.active {
+    background: RGB(230, 0, 88);
+   
+}
+
+
+.clear{
+    clear:both;
+}
+
+.boxes{
+    width: 100%;
+}
+
+#box1{
+    width: 330px;
+    background-color: darkgray;
+    float:left;
+    height: 260px;
+    border: 1px solid RGB(230, 0, 88);
+
+}
+
+#box2 {
+    width: 330px;
+    background-color: darkgray;
+    float: left;
+    height: 260px;
+    border: 1px solid RGB(230, 0, 88);
+}
+
+#box3 {
+    width: 330px;
+    background-color: darkgray;
+    float: left;
+    height: 260px;
+    border: 1px solid RGB(230, 0, 88);
+}
+
+#box4 {
+    width: 334px;
+    background-color: darkgrey;
+    float: left;
+    height: 260px;
+    border: 1px solid RGB(230, 0, 88);
+}
+
+
+#forumImage {
+    width: 1333px;
+    height: 800px;
+}
+
+
+p{
+    font-size:20px;
+    font-family:Verdana;
+    text-align:center;
+}
+
+.clear{
+    clear:both;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: darkgray;
+    color: black;
+}
+
+li:last-child {
+    border-right: none; /*Making sure the last nav button doesnt have a right border */
+}
+
+#navbar a:hover {
+    background: linear-gradient(to right, white,RGB(230, 0, 88) );
+}
+
+#Footer {
+    background-color: RGB(230, 0, 88);
+    text-align: center;
+}
+@media only screen and (max-width:1366px) {
+
+    #banner {
+        width: 100%;
+    }
+}
