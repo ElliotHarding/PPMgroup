@@ -1,0 +1,221 @@
+@import url(http://fonts.googleapis.com/css?family=Varela+Round);
+
+body {}
+#navBar {
+    list-style-type: none;
+	/*position: fixed;*/
+    
+    display: block;
+    height: 5vh;
+    width: 100.8%;
+    background-color: #739abc;
+    margin: -0.8vh -5% 0px -0.4%;
+}
+#navImage {
+    height: 5vh;
+    width: 10%;
+    border: 1px dotted black;
+    float: left;
+    box-sizing: border-box;
+}
+#navLinks {
+    height: 5vh;
+    width: 90%;
+    border: 1px dotted red;
+    float: left;
+    box-sizing: border-box;
+    padding: 0% 0% 0% 1%;
+}
+.quort {
+    /*background-color: azure;*/
+    height: 5vh;
+    box-sizing: border-box;
+    width: 15%;
+    float: left;
+    margin-right: 10%;
+    }
+.lastquort {
+   /* background-color: azure;*/
+    height: 5vh;
+    box-sizing: border-box;
+    width: 15%;
+    float: left;
+    /*margin-right: 10%;*/
+}
+.half {
+	text-align: center;
+	width: 50%;
+	min-height: 47vh; 
+	box-sizing: border-box;
+	float: left;
+	/*border: 1px dotted black;	*/
+}
+.third {
+	width: 10%;
+	min-height: 1vh; 
+	box-sizing: border-box;
+	float: left;
+}
+.navul{
+	/*list-style-type: none;
+	position: fixed;*/
+	margin: 8.5px 15px 15px 15px;
+}
+.navli {
+    font-size: 150%;
+    float: left;
+	padding: 5px 5px 5px 5px;	
+	color: black;
+    /*border-left: 1px solid black;*/
+    text-align: center;
+    margin: -1vh 10% 0% 10%;
+}
+#currentli {
+    background-color: azure;
+}
+li:hover {
+    background-color: azure;
+}
+#lastli {
+    /*border-right: 1px solid black;*/
+}
+
+#navLog {
+    height: 5vh;
+    width: 10%;
+    border: 1px dotted black;
+    float: left;
+    box-sizing: border-box;
+}
+#main {
+    border: 2px solid pink;
+    clear: both;
+    width: 80%;
+    height:95vh;
+    margin-left: 10%;
+    /*background-color: aquamarine;*/
+    box-sizing: border-box;
+}
+#menumain {
+	/*border: 2px solid pink;*/
+    clear: both;
+    width: 80%;
+    height:47.5vh;
+    margin-left: 10%;
+    /*background-color: aquamarine;*/
+    box-sizing: border-box;
+}
+#fullImage{
+    float: left;
+    height: 40vh;
+    width:100%;
+}
+
+
+.slides {
+    padding: 0;
+    width: 105%;
+    height: 45vh;
+    display: block;
+    margin: 0vh -2.5% 0vh -2.5%;
+	
+    position: relative;
+}
+
+.slides * {
+    user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.slides input { display: none; }
+
+.slide-container { display: block; }
+
+.slide {
+    top: 0;
+    opacity: 0;
+    width: 105%;
+    height: 45vh;
+    display: block;
+    position: absolute;
+
+    transform: scale(0);
+
+    transition: all .7s ease-in-out;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+}
+
+.nav label {
+    width: 200px;
+    height: 100%;
+    display: none;
+    position: absolute;
+
+	opacity: 0;
+    z-index: 9;
+    cursor: pointer;
+
+    transition: opacity .2s;
+
+    color: #FFF;
+    font-size: 156pt;
+    text-align: center;
+    line-height: 40vh;
+    font-family: "Varela Round", sans-serif;
+    background-color: rgba(255, 255, 255, .3);
+    text-shadow: 0px 0px 15px rgb(119, 119, 119);
+}
+
+.slide:hover + .nav label { opacity: 0.5; }
+
+.nav label:hover { opacity: 1; }
+
+.nav .next { right: 0; }
+
+input:checked + .slide-container  .slide {
+    opacity: 1;
+
+    transform: scale(1);
+
+    transition: opacity 1s ease-in-out;
+}
+
+input:checked + .slide-container .nav label { display: block; }
+
+.nav-dots {
+	width: 100%;
+	bottom: 9px;
+	height: 11px;
+	display: block;
+	position: absolute;
+	text-align: center;
+}
+
+.nav-dots .nav-dot {
+	top: -5px;
+	width: 11px;
+	height: 11px;
+	margin: 0 4px;
+	position: relative;
+	border-radius: 100%;
+	display: inline-block;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.nav-dots .nav-dot:hover {
+	cursor: pointer;
+	background-color: rgba(0, 0, 0, 0.8);
+}
+
+input#img-1:checked ~ .nav-dots label#img-dot-1,
+input#img-2:checked ~ .nav-dots label#img-dot-2 {
+	background: rgba(0, 0, 0, 0.8);
+}
