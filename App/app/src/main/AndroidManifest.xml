@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.firstexample.elliot.application1">
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <!--
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    -->
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    //added by elliot:
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".signUpActivity" />
+        <activity android:name=".accountSettings" />
+        <activity android:name=".accountSettingsActivity" />
+        <activity android:name=".contactActivity" />
+        <activity android:name=".settingsActivity" />
+        <activity android:name=".anxietyActivity" />
+        <activity android:name=".depressionActivity" />
+        <activity
+            android:name=".forumsActivity"
+            android:label="@string/title_activity_forums"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ForumPostsActivity"
+            android:label="@string/title_activity_forum_posts"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".addPostActivity" />
+        <activity android:name=".addPostInfoActivity"></activity>
+    </application>
+
+</manifest>

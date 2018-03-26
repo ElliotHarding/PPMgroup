@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/listItem_Subject"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:text="Subject"
+        android:textAlignment="viewStart"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/listItem_Username"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignEnd="@+id/listItem_Subject"
+        android:layout_alignStart="@+id/listItem_Subject"
+        android:layout_alignTop="@+id/listItem_Subject"
+        android:text="Username"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/listItem_Date"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@+id/listItem_Subject"
+        android:layout_alignEnd="@+id/listItem_Subject"
+        android:layout_alignStart="@+id/listItem_Subject"
+        android:layout_alignTop="@+id/listItem_Subject"
+        android:layout_marginTop="33dp"
+        android:text="00-00-0000" />
+
+</RelativeLayout>
