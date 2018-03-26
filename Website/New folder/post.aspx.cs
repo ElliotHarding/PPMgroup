@@ -34,8 +34,7 @@ public partial class _Default : System.Web.UI.Page
             //gets all posts and displays them in repeaters            
             try
             {
-                connectionString += "Convert Zero Datetime=True;";
-                MySqlConnection conn = new MySqlConnection(connectionString);
+                MySqlConnection conn = new MySqlConnection(connectionString + "Convert Zero Datetime = True;");
                 conn.Open();
 
                 MySqlCommand command = new MySqlCommand("SELECT * FROM posts WHERE postID = " + id + ";", conn);
@@ -49,12 +48,12 @@ public partial class _Default : System.Web.UI.Page
                 {
                     postString = reader.GetString("postString");
                     postUsername = reader.GetString("username");
-                    postDate = reader.GetString("postDate");
+                    postDate = reader.GetString("postDate");                                       
                 }
                 reader.Close();
 
                 //todo order by date...
-                command = new MySqlCommand("SELECT * FROM postInfo WHERE postID = " + id + " ORDER BY replyDate ASC;");
+                command = new MySqlCommand("SELECT * FROM postInfo WHERE postID = " + id + " ORDER BY replyDate DESC;");
                     
                 using (MySqlDataAdapter sda = new MySqlDataAdapter())
                 {
@@ -80,7 +79,7 @@ public partial class _Default : System.Web.UI.Page
             }
             catch (Exception message)
             {
-                string errorMessage = "Connection to data failed!Message:\n" + message.Message;
+                string errorMessage = "Connection to data failed!Message: " + message.Message;
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('"+errorMessage+"')", true);
             }
         }
@@ -119,7 +118,7 @@ public partial class _Default : System.Web.UI.Page
     {
         string text = Request.Form["postReplyTxt"];
 
-        if (text.Length < 1 || text.Length > 20)
+        if (text.Length < 1 || text.Length > 200)
         {
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Reply too long/short')", true);
         }
@@ -133,12 +132,11 @@ public partial class _Default : System.Web.UI.Page
             {
                 errorString += "Not signed in! ";
             }
-
-            if (string.IsNullOrEmpty(myCookie.Values["username"]))
+            else if (myCookie.Values["username"] == null)
             {
                 errorString += "Not signed in! ";
             }
-
+            
             if (errorString != "")
             {
                 //display error string
@@ -153,8 +151,7 @@ public partial class _Default : System.Web.UI.Page
                     MySqlCommand cmd = new MySqlCommand("INSERT INTO postInfo(`replyString`, `replyDate`, `replyUsername`, `postID`) VALUES (@replyString,@replyDate,@replyUsername,@postID);", con);
 
                     cmd.Parameters.AddWithValue("@replyString", text);
-                    string currentDT = DateTime.Now.ToString();
-                    cmd.Parameters.AddWithValue("@replyDate", currentDT);
+                    cmd.Parameters.AddWithValue("@replyDate", DateTime.Now);
                     cmd.Parameters.AddWithValue("@replyUsername", myCookie.Values["username"].ToString());
                     cmd.Parameters.AddWithValue("@postID", id);
                     cmd.ExecuteNonQuery();

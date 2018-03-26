@@ -21,7 +21,7 @@ public partial class _Default : System.Web.UI.Page
                     con.Open();
 
                     //todo order by date...
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM posts ORDER BY postDate")){
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM posts ORDER BY postDate DESC")){
                         using (MySqlDataAdapter sda = new MySqlDataAdapter()){
                             cmd.Connection = con;
                             sda.SelectCommand = cmd;
@@ -37,8 +37,8 @@ public partial class _Default : System.Web.UI.Page
             }
             catch (Exception message)
             {
-                string errorMessage = "Connection to data failed!Message:\n" + message.Message;
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert(errorMessage)", true);
+                string errorMessage = "Connection to data failed!Message: " + message.Message;
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('"+errorMessage+"')", true);
             }
         }
     }
