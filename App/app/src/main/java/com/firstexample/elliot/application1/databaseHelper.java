@@ -462,15 +462,6 @@ public class databaseHelper extends SQLiteOpenHelper {
 
 
 
-/*
-
-
-INSERT INTO `posts` (`username`, `postString`, `postDate`, `postSubject`, `postID`) VALUES ('elliot', 'this is elliots post', '2018-02-09', 'life is a lie', '1'), ('john', 'this is johns post, he has a little infomation', '2018-02-01', 'When will life end', '2')
-
- */
-
-
-
 
 
     /*

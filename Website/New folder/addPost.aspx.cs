@@ -23,7 +23,7 @@ public partial class _Default : System.Web.UI.Page
 
         string errorString = "";
 
-        if (subject.Length < 1 || text.Length < 1 || subject.Length > 45 || text.Length > 45)
+        if (subject.Length < 1 || text.Length < 1 || subject.Length > 45 || text.Length > 200)
         {
             errorString += "Subject/text length is too long/short. ";
         }
@@ -57,7 +57,7 @@ public partial class _Default : System.Web.UI.Page
 
             cmd.Parameters.AddWithValue("@username", myCookie.Values["username"].ToString());
             cmd.Parameters.AddWithValue("@postString",text);
-            cmd.Parameters.AddWithValue("@postDate",DateTime.Now.ToString());
+            cmd.Parameters.AddWithValue("@postDate",DateTime.Now);
             cmd.Parameters.AddWithValue("@postSubject",subject);
             //cmd.Parameters.AddWithValue("@postID","55");//<-- needs working on
             cmd.ExecuteNonQuery();

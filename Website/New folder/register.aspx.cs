@@ -140,6 +140,7 @@ public partial class _Default : System.Web.UI.Page
                 //sign in
                 signInUser(username);
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Signed In!')", true);
+                Response.Redirect("forumPage.aspx");
                 return;
             }
         }
