@@ -34,48 +34,23 @@ public partial class _Default : System.Web.UI.Page
             //gets all posts and displays them in repeaters            
             try
             {
-                MySqlConnection conn = new MySqlConnection(connectionString + "Convert Zero Datetime = True;");
-                conn.Open();
+                DataTable dt = new DataTable();
+                DatabaseHelper db = new DatabaseHelper();
 
-                MySqlCommand command = new MySqlCommand("SELECT * FROM posts WHERE postID = " + id + ";", conn);
-                MySqlDataReader reader = command.ExecuteReader();
+                //add all postInfo data from db to dt
+                dt = db.allPostsInfoDT(id);
 
-                string postString = "error";
-                string postUsername = "error";
-                string postDate = "error";
+                //add post inital string
+                Post initialPost = db.getPost(id);
+                DataRow dr = dt.NewRow();
+                dr["replyString"] = initialPost.postString;
+                dr["replyUsername"] = initialPost.username;
+                dr["replyDate"] = initialPost.postDate;
+                dt.Rows.Add(dr);
 
-                if (reader.Read())
-                {
-                    postString = reader.GetString("postString");
-                    postUsername = reader.GetString("username");
-                    postDate = reader.GetString("postDate");                                       
-                }
-                reader.Close();
-
-                //todo order by date...
-                command = new MySqlCommand("SELECT * FROM postInfo WHERE postID = " + id + " ORDER BY replyDate DESC;");
-                    
-                using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                {
-                    command.Connection = conn;
-                    sda.SelectCommand = command;
-                    using (DataTable dt = new DataTable())
-                    {
-                        sda.Fill(dt);
-
-                        //add post inital string
-                        DataRow dr = dt.NewRow();
-                        dr["replyString"] = postString;
-                        dr["replyUsername"] = postUsername;
-                        dr["replyDate"] = postDate;
-                        dt.Rows.Add(dr);
-
-                        //fill repeater with data
-                        postRepeater.DataSource = dt;
-                        postRepeater.DataBind();
-                    }
-                }
-                conn.Close();  
+                //fill repeater with data
+                postRepeater.DataSource = dt;
+                postRepeater.DataBind();
             }
             catch (Exception message)
             {
@@ -83,36 +58,7 @@ public partial class _Default : System.Web.UI.Page
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('"+errorMessage+"')", true);
             }
         }
-    }
-
-    private List<postInfo> getAllPostInfoFromId(string id)
-    {
-        List<postInfo> allPostInfo = new List<postInfo>();
-
-        try
-        {
-            MySqlConnection con = new MySqlConnection(connectionString);
-            con.Open();
-
-            MySqlCommand cmd = new MySqlCommand("SELECT * FROM postInfo WHERE postID = " + id + ";", con);
-            MySqlDataReader reader = cmd.ExecuteReader();
-
-            while (reader.Read())
-            {
-                allPostInfo.Add(new postInfo(reader.GetString("replyString"),
-                               reader.GetString("replyDate"),
-                               reader.GetString("replyUsername"),
-                              int.Parse(reader.GetString("postID"))));
-            }
-        }
-        catch (Exception message)
-        {
-            string errorMessage = "Connection to data failed! Message: " + message.Message;
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('"+errorMessage+"')", true);
-        }
-
-        return allPostInfo;
-    }
+    }    
 
     protected void postReplyButton_Click(object sender, EventArgs e)
     {
@@ -146,17 +92,8 @@ public partial class _Default : System.Web.UI.Page
             {
                 try
                 {
-                    MySqlConnection con = new MySqlConnection(connectionString);
-                    con.Open();
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO postInfo(`replyString`, `replyDate`, `replyUsername`, `postID`) VALUES (@replyString,@replyDate,@replyUsername,@postID);", con);
-
-                    cmd.Parameters.AddWithValue("@replyString", text);
-                    cmd.Parameters.AddWithValue("@replyDate", DateTime.Now);
-                    cmd.Parameters.AddWithValue("@replyUsername", myCookie.Values["username"].ToString());
-                    cmd.Parameters.AddWithValue("@postID", id);
-                    cmd.ExecuteNonQuery();
-
-                    con.Close();
+                    //add reply to mySql server
+                    new DatabaseHelper().addPostInfo(new PostInfo(text,"0", myCookie.Values["username"].ToString(),int.Parse(id)));
 
                     //redirect to homepage
                     Response.Redirect("post.aspx?id=" + id);

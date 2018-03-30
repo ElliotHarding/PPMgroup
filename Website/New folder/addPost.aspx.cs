@@ -50,19 +50,9 @@ public partial class _Default : System.Web.UI.Page
 
         //add post
         try
-        {
-            MySqlConnection con = new MySqlConnection(connectionString);
-            con.Open();
-            MySqlCommand cmd = new MySqlCommand("INSERT INTO posts(`username`, `postString`, `postDate`, `postSubject`, `postID`) VALUES (@username,@postString,@postDate,@postSubject,UUID());", con);
-
-            cmd.Parameters.AddWithValue("@username", myCookie.Values["username"].ToString());
-            cmd.Parameters.AddWithValue("@postString",text);
-            cmd.Parameters.AddWithValue("@postDate",DateTime.Now);
-            cmd.Parameters.AddWithValue("@postSubject",subject);
-            //cmd.Parameters.AddWithValue("@postID","55");//<-- needs working on
-            cmd.ExecuteNonQuery();
-
-            con.Close();
+        {           
+            //add post to mySql server
+            new DatabaseHelper().addPost(new Post(myCookie.Values["username"].ToString(), text, "0", subject, 999999999));
 
             //redirect to homepage
             Response.Redirect("forumPage.aspx");

@@ -16,24 +16,9 @@ public partial class _Default : System.Web.UI.Page
         if (!IsPostBack)
         {
             //gets all posts and displays them in repeaters            
-            try{
-                using (MySqlConnection con = new MySqlConnection(connectionString)){
-                    con.Open();
-
-                    //todo order by date...
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM posts ORDER BY postDate DESC")){
-                        using (MySqlDataAdapter sda = new MySqlDataAdapter()){
-                            cmd.Connection = con;
-                            sda.SelectCommand = cmd;
-                            using (DataTable dt = new DataTable()){
-                                sda.Fill(dt);
-
-                                forumPostRepeater.DataSource = dt;
-                                forumPostRepeater.DataBind();
-                            }
-                        }
-                    }
-                }
+            try{                
+                forumPostRepeater.DataSource = new DatabaseHelper().allPostsDT();
+                forumPostRepeater.DataBind();
             }
             catch (Exception message)
             {
