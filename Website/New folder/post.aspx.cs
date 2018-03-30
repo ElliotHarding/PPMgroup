@@ -46,7 +46,7 @@ public partial class _Default : System.Web.UI.Page
                 dr["replyString"] = initialPost.postString;
                 dr["replyUsername"] = initialPost.username;
                 dr["replyDate"] = initialPost.postDate;
-                dt.Rows.Add(dr);
+                dt.Rows.InsertAt(dr, 0);
 
                 //fill repeater with data
                 postRepeater.DataSource = dt;
