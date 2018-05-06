@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 public class addPostInfoActivity extends AppCompatActivity {
@@ -57,7 +59,9 @@ public class addPostInfoActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Content is too short.", Toast.LENGTH_LONG).show();
                     }else{
                         //get current date
-                        String date = "2018-12-02";
+                        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date dNow = new Date();
+                        String date = sdfDate.format(dNow);
 
                         int postIdToAddTo = Integer.parseInt(getIntent().getStringExtra("postIdToAddTo"));
                         postInfo pi = new postInfo(postIdToAddTo,content.getText().toString(),date,uName);

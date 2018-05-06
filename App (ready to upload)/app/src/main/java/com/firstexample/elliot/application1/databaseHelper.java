@@ -46,7 +46,7 @@ public class databaseHelper extends SQLiteOpenHelper {
     private static String postsInfoTableName = "postInfo";
 
     //Constructor:
-    public databaseHelper(Context context){
+    public databaseHelper(Context context) {
         super(context, databaseName, null, databaseVersion);
     }
 
@@ -116,7 +116,6 @@ public class databaseHelper extends SQLiteOpenHelper {
         db.execSQL("delete from " + postsTableName);
         db.execSQL("delete from " + postsInfoTableName);
 
-        db.close();
 
         //retrival of new data into local database
         new getData().execute();
@@ -124,25 +123,29 @@ public class databaseHelper extends SQLiteOpenHelper {
 
     //checks if local database has been populated with data
     public boolean checkPopulated(String tableName){
-        db = this.getWritableDatabase();
+        try {
+            db = this.getWritableDatabase();
 
-        String query = "SELECT COUNT(*) FROM " + tableName;
-        Cursor cursor = db.rawQuery(query,null);
+            String query = "SELECT COUNT(*) FROM " + tableName;
+            Cursor cursor = db.rawQuery(query,null);
 
-        boolean b = cursor.moveToFirst();
-        String s = cursor.getString(0);
+            boolean b = cursor.moveToFirst();
+            String s = cursor.getString(0);
 
-        cursor.close();
-        db.close();
+            cursor.close();
 
-        if(Integer.valueOf(s) > 0){
-            return true;
+            if(Integer.valueOf(s) > 0){
+                return true;
+            }
+            return false;
+
+        }catch (Exception e){
+            throw e;
         }
-        return false;
     }
 
     public void addContact(contact c, boolean upload){
-
+    try {
         //get local database
         db = this.getWritableDatabase();
 
@@ -153,38 +156,19 @@ public class databaseHelper extends SQLiteOpenHelper {
 
         //insert values into local database, contact table
         db.insert(contactTableName, null, values);
-        db.close();
 
         //check if we push contact to online host
-        if(upload){
+        if (upload) {
             //execte upload thread
             new uploadToDatabaseThread(c).execute();
         }
+    }catch (Exception e){
+        throw e;
     }
-
-    public int numberOfPosts(){
-        //get local database
-        db = this.getWritableDatabase();
-
-        //SELECT postID from posts
-        String query = "SELECT postID FROM " + postsTableName;
-        Cursor cursor = db.rawQuery(query,null);
-
-        int count = 0;
-
-        if(cursor.moveToFirst()) {
-            do{
-                count += 1;
-            }while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-
-        return count;
     }
 
     public void addPost(post p, boolean upload){
-
+    try{
         //get local database
         db = this.getWritableDatabase();
 
@@ -198,17 +182,19 @@ public class databaseHelper extends SQLiteOpenHelper {
 
         //insert values into local database, contact table
         db.insert(postsTableName, null, values);
-        db.close();
 
         //check if we push contact to online host
         if(upload){
             //execte upload thread
             new uploadToDatabaseThread(p).execute();
         }
+    }catch (Exception e){
+        throw e;
+    }
     }
 
     public void addPostInfo(postInfo pi, boolean upload){
-
+    try{
         //get local database
         db = this.getWritableDatabase();
 
@@ -221,18 +207,20 @@ public class databaseHelper extends SQLiteOpenHelper {
 
         //insert values into local database, contact table
         db.insert(postsInfoTableName, null, values);
-        db.close();
 
         //check if we push contact to online host
         if(upload){
             //execte upload thread
             new uploadToDatabaseThread(pi).execute();
         }
+    }catch (Exception e){
+        throw e;
+    }
     }
 
     //check if username exists
     public boolean usernameExists(String username){
-
+    try{
         //get local database
         db = this.getReadableDatabase();
 
@@ -246,19 +234,21 @@ public class databaseHelper extends SQLiteOpenHelper {
             do{
                 if(username.equals(cursor.getString(0))){
                     cursor.close();
-                    db.close();
                    return true;
                 }
             }while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
 
         return false;
+    }catch (Exception e){
+        throw e;
+    }
     }
 
     //returns password of given username
     public String findPassword(String username){
+    try{
         //get local database
         db = this.getReadableDatabase();
 
@@ -279,17 +269,18 @@ public class databaseHelper extends SQLiteOpenHelper {
             }while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
         return pswd;
+    }catch (Exception e){
+        throw e;
+    }
     }
 
     public post getPost(int postID){
 
+        try{
         //get local database
         db = this.getReadableDatabase();
 
-        //SELECT username, postString, postDate, postSubject, postID
-        //todo order by datetime!
         String query = "SELECT * FROM " + postsTableName + " WHERE postID =" + postID;
         Cursor cursor = db.rawQuery(query,null);
 
@@ -302,19 +293,21 @@ public class databaseHelper extends SQLiteOpenHelper {
             return new post(username, postString, postDate, postSubject, postID);
         }
         cursor.close();
-        db.close();
 
-        return new post("a","a","d","d",1);
+        }catch (Exception e){
+            throw e;
+        }
+
+        return null;
     }
 
 
     public ArrayList<postInfo> getPostInfo(int postID){
+    try{
         //get local database
         db = this.getReadableDatabase();
 
-        //SELECT postID, replyString, replyDate, replyUsername
-        //todo order by datetime!
-        String query = "SELECT * FROM " + postsInfoTableName + " WHERE postID =" + postID;
+        String query = "SELECT * FROM " + postsInfoTableName + " WHERE postID =" + postID + " ORDER BY replyDate ASC";
         Cursor cursor = db.rawQuery(query,null);
 
         ArrayList<postInfo> infoList = new ArrayList<postInfo>();
@@ -327,14 +320,38 @@ public class databaseHelper extends SQLiteOpenHelper {
             infoList.add(new postInfo(0,"","",""));
         }
         cursor.close();
-        db.close();
         
         return infoList;
+    }catch (Exception e){
+        throw e;
+    }
     }
 
     //get data
     InputStream isrTable1, isrTable2, isrTable3;
     String result1, result2, result3;
+
+    public ArrayList<post> getAllPosts() {
+        ArrayList<post> allPosts = new ArrayList<post>();
+
+        //get local database
+        db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM " + postsTableName + " ORDER BY postDate DESC";
+        Cursor cursor = db.rawQuery(query,null);
+
+        if(cursor.moveToFirst()) {
+            do{
+                allPosts.add(new post(cursor.getString(cursor.getColumnIndex("username")),cursor.getString(cursor.getColumnIndex("postString")),cursor.getString(cursor.getColumnIndex("postDate")),cursor.getString(cursor.getColumnIndex("postSubject")),Integer.parseInt(cursor.getString(cursor.getColumnIndex("postID")))));
+            }while (cursor.moveToNext());
+        }else{
+            allPosts.add(new post("s","s","s","",0));
+        }
+        cursor.close();
+
+        return allPosts;
+    }
+
     /*
       |-----------------------------------------------------------
       |  NAME    : getData

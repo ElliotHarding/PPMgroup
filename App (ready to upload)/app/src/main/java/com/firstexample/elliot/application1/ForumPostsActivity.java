@@ -47,12 +47,17 @@ public class ForumPostsActivity extends AppCompatActivity {
         //try refresh db
         try{
             helper.refreshDatabase();
+            refresh();
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Error refreshing database! Try reloading page.", Toast.LENGTH_LONG).show();
         }
 
         //get post selected
-        postId = Integer.parseInt(getIntent().getStringExtra("postNumber"));
+        try{
+            postId = Integer.parseInt(getIntent().getStringExtra("postNumber"));
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Error getting posts infomation! Try reloading page.", Toast.LENGTH_LONG).show();
+        }
 
         handler.postDelayed(new Runnable() {
             @Override

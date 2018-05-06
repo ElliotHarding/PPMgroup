@@ -18,7 +18,7 @@ $replyDate = $_POST['replyDate'];
 $replyUsername = $_POST['replyUsername'];
 
 $sql = "INSERT INTO postInfo(postID,replyString,replyDate,replyUsername)
-VALUES ('{$postID}','{$replyString}','{$replytDate}','{$replyUsername}')";
+VALUES ('{$postID}','{$replyString}',now(),'{$replyUsername}')";
 
 if ($conn->query($sql) === TRUE) {
     echo "New record created successfully";

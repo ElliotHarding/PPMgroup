@@ -44,12 +44,6 @@ public class MainActivity extends AppCompatActivity {
             loginNameTV.setText("Not Logged In!");
         }
 
-        //STETHO:
-        Stetho.initializeWithDefaults(this);
-        new OkHttpClient.Builder()
-                .addNetworkInterceptor(new StethoInterceptor())
-                .build();
-
         View.OnClickListener onClick = new View.OnClickListener() {
             @Override
             public void onClick(View view) {

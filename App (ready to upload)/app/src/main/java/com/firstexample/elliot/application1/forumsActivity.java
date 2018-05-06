@@ -90,7 +90,7 @@ public class forumsActivity extends AppCompatActivity {
         displayList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(view.getContext(), ForumPostsActivity.class);
-                intent.putExtra("postNumber",Integer.toString(position));
+                intent.putExtra("postNumber",Integer.toString(posts.get(position).getId()));
                 startActivity(intent);
             }
         });
@@ -101,10 +101,8 @@ public class forumsActivity extends AppCompatActivity {
         if(result){
             posts.clear();
 
-            for(int x = 0; x <  helper.numberOfPosts(); x++){
-                post p = helper.getPost(x);
-                posts.add(new post(p.getUsername(),"Null",p.getPostDate(),p.getPostSubject(),x));
-            }
+            //get posts
+            posts = helper.getAllPosts();
 
             ArrayAdapter<post> adapter = new adapterClass();
             displayList.setAdapter(adapter);
