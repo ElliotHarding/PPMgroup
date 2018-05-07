@@ -8,11 +8,11 @@ using System.Web.UI;
 
 public class Post
 {
-    public string username;
-    public string postString;
-    public string postDate;
-    public string postSubject;
-    public int postID;
+    public string username { get; set; }
+    public string postString { get; set; }
+    public string postDate { get; set; }
+    public string postSubject { get; set; }
+    public int postID { get; set; }
 
     public Post(string username, string postString, string postDate, string postSubject, int postID)
     {
@@ -21,6 +21,18 @@ public class Post
         this.postDate = postDate;
         this.postSubject = postSubject;
         this.postID = postID;
+    }
+}
+
+public class contact
+{
+    public string username;
+    public string password;
+
+    public contact(string username, string password)
+    {
+        this.username = username;
+        this.password = password;
     }
 }
 
@@ -59,6 +71,34 @@ public class DatabaseHelper
         cmd.ExecuteNonQuery();
 
         con.Close();
+    }
+
+    public List<Post> allPosts()
+    {
+        List<Post> returnPosts = new List<Post>();
+        MySqlConnection con = new MySqlConnection(connectionString + "Convert Zero Datetime = True;");
+        con.Open();
+
+        MySqlCommand cmd = new MySqlCommand("SELECT * FROM posts ORDER BY postDate DESC", con);
+        MySqlDataReader reader = cmd.ExecuteReader();
+
+
+        while (reader.Read())
+        {
+            Post returnPost = new Post(
+            reader.GetString("username"),
+            reader.GetString("postString"),
+            reader.GetString("postDate"),
+            reader.GetString("postSubject"),
+            Int32.Parse(reader.GetString("postID"))
+            );
+
+            returnPosts.Add(returnPost);
+        }
+
+        reader.Close();
+        con.Close();
+        return returnPosts;
     }
 
     public DataTable allPostsDT()
@@ -117,6 +157,7 @@ public class DatabaseHelper
             returnPost.postString = reader.GetString("postString");
             returnPost.username = reader.GetString("username");
             returnPost.postDate = reader.GetString("postDate");
+            returnPost.postSubject = reader.GetString("postSubject");
         }
 
         reader.Close();
@@ -138,5 +179,30 @@ public class DatabaseHelper
         cmd.ExecuteNonQuery();
 
         con.Close();
+    }
+
+    public List<contact> getContacts()
+    {
+        List<contact> contacts = new List<contact>();
+        try
+        {
+            MySqlConnection con = new MySqlConnection(connectionString);
+            MySqlCommand cmd = new MySqlCommand("SELECT * FROM contacts", con);
+
+            con.Open();
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                contacts.Add(new contact(reader.GetString("username"), reader.GetString("password")));
+            }
+        }
+        catch (Exception message)
+        {
+            
+        }
+
+        return contacts;
     }
 }

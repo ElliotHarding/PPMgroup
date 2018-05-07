@@ -1,6 +1,4 @@
 ﻿/*MASTER PAGE*/
-/*example for sam*/
-
 .p {
     clear: both;
     font-size: 8px;
@@ -176,12 +174,12 @@ font-size:x-large;
 
 /*links page*/
 .links {
-    text-align: left;
+    text-align: center;
 }
 .linksText{
     font-size: 16px;
     font-family: Verdana;
-    text-align: left;
+    text-align: center;
 }
 .content-text{
     text-align:center;
@@ -214,10 +212,6 @@ font-size:x-large;
     text-align: left;
     width: 300px;
     display: inline-block;
-}
-#infomationWrapper{
-    width: 100%;
-    margin: 10px;
 }
 .infoLbl{
     font-size: 24px;

@@ -22,7 +22,6 @@
         <div id="registerWrapper">
             <div class="register">
             <h1>Register </h1>
-
             <label class="labels">Password </label><br />
             <asp:TextBox ID="txtPassword" runat="server" CssClass="entry" Height="16px" Width="226px" BackColor="DarkGray"></asp:TextBox>
             <br />
@@ -55,14 +54,6 @@
         </div>
 
         <hr />
-
-        <div id="infomationWrapper">
-            <asp:Label CssClass="infoLbl" ID="Name" runat="server" Text="Name: "></asp:Label><br />
-            <asp:Label CssClass="infoLbl" ID="Email" runat="server" Text="Email: "></asp:Label><br />
-            <asp:Label CssClass="infoLbl" ID="Username" runat="server" Text="Username: "></asp:Label><br />
-            <asp:Label CssClass="infoLbl" ID="Password" runat="server" Text="Password: "></asp:Label><br /><br />
-            <asp:Button ID="changeInfoButton" runat="server" Text="Change Infomation" />
-        </div>
 
     </div>
 

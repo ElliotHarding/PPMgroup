@@ -7,7 +7,7 @@
                 <!--Need to format hrefs in a different colour with css so they are visible on the webpage-->
                 <a href="https://www4.ntu.ac.uk/student_services/health_wellbeing/index.html">here.</a>
             </p>
-            <p class="linksText">Directory of links providing advice on: <br/>exam stress; <br/>academic issues; <br/>alcohol & drugs; <br/>anger management; <br/>anxiety & stress; <br/>bereavement; <br/>depression; <br/>domestic violence; <br/>eating issues; <br/>mental health; <br/>local NHS services; <br/>self harm & suicidal feelings; <br/>sexuality; <br/>sleep and more!
+            <p class="content-text">Directory of links providing advice on: <br/>exam stress; <br/>academic issues; <br/>alcohol & drugs; <br/>anger management; <br/>anxiety & stress; <br/>bereavement; <br/>depression; <br/>domestic violence; <br/>eating issues; <br/>mental health; <br/>local NHS services; <br/>self harm & suicidal feelings; <br/>sexuality; <br/>sleep and more!
                 <a href="https://www4.ntu.ac.uk/student_services/health_wellbeing/information-advice/index.html">here.</a>
             </p>
             <h3 class="content-text">External counselling agencies - these organisations often provide free or reduced cost counselling for students.</h3>
@@ -35,17 +35,7 @@
                 <p></p>
 
             <br />
-            <h2 class="content-text">Depression Links</h2>
-                <p class="linksText">
-                
-                </p>
-
-            <br />
-
-            <h2 class="content-text">Anxiety Links</h2>
-                <p class="linksText">
-                </p>
-           
+            
         </div>
 </asp:Content>
 

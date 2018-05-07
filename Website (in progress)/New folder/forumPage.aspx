@@ -3,7 +3,7 @@
 <asp:Content ID="forumPage" ContentPlaceHolderID="bodyContent" Runat="Server">
     <br />
     <asp:Button ID="addPostButton" runat="server" Text="Add Post" OnClick="gotoAddPost" />
-    <asp:Button ID="viewPostsButton" runat="server" Text="View Your Posts" OnClick="gotoAddPost"/>
+    <asp:Button ID="viewPostsButton" runat="server" Text="View Your Posts" OnClick="viewPostsButton_Click"/>
     <br />
     <br />
     <asp:Label ID="postsLbl" runat="server" Text="Posts:"></asp:Label>

@@ -2,6 +2,9 @@
 
 <asp:Content ID="postContent" ContentPlaceHolderID="bodyContent" Runat="Server">
     <div id="postWrapper">
+
+        <h3 runat="server" id="postTitle">TITLE</h3>
+
         <asp:Repeater ID="postRepeater" runat="server">
             <ItemTemplate>
 

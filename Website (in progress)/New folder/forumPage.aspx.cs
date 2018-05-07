@@ -10,6 +10,7 @@ using MySql.Data.MySqlClient;
 public partial class _Default : System.Web.UI.Page
 {    
     string connectionString = @"Data Source=den1.mysql2.gear.host; Database=forumsdb; Convert Zero Datetime=True; User =forumsdb; Password='Forums_9'";
+    DatabaseHelper db = new DatabaseHelper();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -17,7 +18,7 @@ public partial class _Default : System.Web.UI.Page
         {
             //gets all posts and displays them in repeaters            
             try{                
-                forumPostRepeater.DataSource = new DatabaseHelper().allPostsDT();
+                forumPostRepeater.DataSource = db.allPostsDT();
                 forumPostRepeater.DataBind();
             }
             catch (Exception message)
@@ -42,56 +43,40 @@ public partial class _Default : System.Web.UI.Page
         Response.Redirect("addPost.aspx");
     }
 
-    private List<post> getAllPosts(string username)
-    {
-        List<post> allPosts = new List<post>();
+    private string getUsername() {
 
-        try
+        HttpCookie myCookie = Request.Cookies["usernameCookie"];
+        if (myCookie == null)
         {
-            MySqlConnection con = new MySqlConnection(connectionString);
-            MySqlCommand cmd = new MySqlCommand("SELECT * FROM posts WHERE username =" + username, con);
+            return "";
+        }
 
-            con.Open();
+        if (!string.IsNullOrEmpty(myCookie.Values["username"]))
+        {
+            return myCookie.Values["username"].ToString();
+        }
+        
+        return "";
+    }
 
-            MySqlDataReader reader = cmd.ExecuteReader();
 
-            while (reader.Read())
+    protected void viewPostsButton_Click(object sender, EventArgs e)
+    {
+        List<Post> allPosts = db.allPosts();
+        List<Post> displayPosts = new List<Post>();
+        for (int x = 0; x < allPosts.Count(); x++)
+        {
+            if (allPosts[x].username == getUsername())
             {
-                allPosts.Add(new post(reader.GetString("username"),
-                reader.GetString("postString"),
-                reader.GetString("postDate"),
-                reader.GetString("postSubject"),
-                int.Parse(reader.GetString("postID"))));
+                displayPosts.Add(allPosts[x]);
             }
         }
-        catch (Exception message)
-        {
-            string errorMessage = "Connection to data failed!Message:\n" + message.Message;
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert(errorMessage)", true);
-        }
 
-        return allPosts;
-    }
-
-}
-
-
-class post
-{
-    public string username;
-    public string postString;
-    public string postDate;
-    public string postSubject;
-    public int postID;
-
-    public post(string username, string postString, string postDate, string postSubject, int postID)
-    {
-        this.username = username;
-        this.postString = postString;
-        this.postDate = postDate;
-        this.postSubject = postSubject;
-        this.postID = postID;
+        forumPostRepeater.DataSource = displayPosts;
+        forumPostRepeater.DataBind();
     }
 }
+
+
 
 

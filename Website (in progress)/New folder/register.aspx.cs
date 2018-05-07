@@ -16,32 +16,6 @@ public partial class _Default : System.Web.UI.Page
         
     }
 
-    private List<contact> getContacts()
-    {
-        List<contact> contacts = new List<contact>();
-        try
-        {
-            MySqlConnection con = new MySqlConnection(connectionString);
-            MySqlCommand cmd = new MySqlCommand("SELECT * FROM contacts",con);
-
-            con.Open();
-
-            MySqlDataReader reader = cmd.ExecuteReader();
-
-            while (reader.Read())
-            {
-                contacts.Add(new contact(reader.GetString("username"), reader.GetString("password")));
-            }
-        }
-        catch (Exception message)
-        {
-            string errorMessage = "Connection to data failed!Message:\n" + message.Message;
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert(errorMessage)", true);
-        }
-
-        return contacts;
-    }
-
     protected void registerButton_Click(object sender, EventArgs e)
     {
         //get details
@@ -54,7 +28,7 @@ public partial class _Default : System.Web.UI.Page
 
         string errorMessage = "";
 
-        List<contact> contacts = getContacts();
+        List<contact> contacts = new DatabaseHelper().getContacts();
 
         for (int x =0; x < contacts.Count; x++)
         {
@@ -131,7 +105,7 @@ public partial class _Default : System.Web.UI.Page
         string username = usernameTXT.Text;
         string password = passwordTXT.Text;
 
-        List<contact> contacts = getContacts();
+         List < contact > contacts = new DatabaseHelper().getContacts();
 
         for (int x = 0; x < contacts.Count; x++)
         {
@@ -164,14 +138,4 @@ public partial class _Default : System.Web.UI.Page
     }
 }
 
-class contact
-{
-    public string username;
-    public string password;
 
-    public contact(string username, string password)
-    {
-        this.username = username;
-        this.password = password;
-    }
-}

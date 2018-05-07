@@ -17,6 +17,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
         if (myCookie == null)
         {
             signedInLbl.Text = notSigedInString;
+            signOutBtn.Visible = false;
             return;
         }
 
@@ -25,10 +26,12 @@ public partial class MasterPage : System.Web.UI.MasterPage
         {
             signedIn = myCookie.Values["username"].ToString();
             signedInLbl.Text = "Signed in: " + signedIn;
+            signOutBtn.Visible = true;
         }
         else
         {
             signedInLbl.Text = notSigedInString;
+            signOutBtn.Visible = false;
         }
     }
 
@@ -45,10 +48,27 @@ public partial class MasterPage : System.Web.UI.MasterPage
 
         //change display
         signedInLbl.Text = notSigedInString;
+        signOutBtn.Visible = false;
+        Response.Redirect("register.aspx");
     }
 
     protected void gotoAccount(object sender, EventArgs e)
     {
-        Response.Redirect("register.aspx");
+        HttpCookie myCookie = Request.Cookies["usernameCookie"];
+        if (myCookie == null)
+        {
+            Response.Redirect("register.aspx");
+            return;
+        }
+        if (!string.IsNullOrEmpty(myCookie.Values["username"]))
+        {
+            Response.Redirect("account.aspx");
+            signOutBtn.Visible = true;
+        }
+        else
+        {
+            Response.Redirect("register.aspx");
+        }
+        
     }
 }

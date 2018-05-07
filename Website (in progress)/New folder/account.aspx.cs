@@ -10,31 +10,55 @@ using System.Web.UI.WebControls;
 public partial class _Default : System.Web.UI.Page
 {
     string connectionString = @"Data Source=den1.mysql2.gear.host; Database=forumsdb; Convert Zero Datetime=True; User =forumsdb; Password='Forums_9'";
+    DatabaseHelper db = new DatabaseHelper();
+    String username = null;
 
     protected void Page_Load(object sender, EventArgs e)
     {
+
         HttpCookie myCookie = Request.Cookies["usernameCookie"];
         if (myCookie == null)
         {
             Response.Redirect("register.aspx");
             return;
         }
-        string signedIn = null;
-        String username = myCookie.Values["username"].ToString();
+
+        
         if (!string.IsNullOrEmpty(myCookie.Values["username"]))
         {
-            //String username = myCookie.Values["username"].ToString();
-            //info.Text = username;
+            username = myCookie.Values["username"].ToString();
         }
         else
         {
             Response.Redirect("register.aspx");
         }
+
+        if (!IsPostBack)
+        {
+            if (username != null)
+        {
+            List<contact> contacts = db.getContacts();
+            for (int x = 0; x < contacts.Count; x++)
+            {
+                if (contacts[x].username == username)
+                {
+                    PasswordTxt.Text = contacts[x].password;
+                }
+            }
+
+            Welcome.Text = "Welcome " + username + " to the help forums!";
+        }
+        else
+        {
+            Welcome.Text = "Not signed in!";
+        }
+        
+        
             
         adminDiv.Visible = false;
         superDiv.Visible = false;
         
-        Welcome.Text = "Welcome "+ username+" to the help forums!";   
+        
             
         List<admin> admins = getAdmins();
 
@@ -51,6 +75,7 @@ public partial class _Default : System.Web.UI.Page
                 adminDiv.Visible = true;
                 return;
             }
+        }
         }
     }
 
@@ -79,38 +104,14 @@ public partial class _Default : System.Web.UI.Page
         return admins;
     }
 
-     private List<contact> getContacts()
-    {
-        List<contact> contacts = new List<contact>();
-        try
-        {
-            MySqlConnection con = new MySqlConnection(connectionString);
-            MySqlCommand cmd = new MySqlCommand("SELECT * FROM contacts",con);
-
-            con.Open();
-
-            MySqlDataReader reader = cmd.ExecuteReader();
-
-            while (reader.Read())
-            {
-                contacts.Add(new contact(reader.GetString("username"), reader.GetString("password")));
-            }
-        }
-        catch (Exception message)
-        {
-            string errorMessage = "Connection to data failed!Message:\n" + message.Message;
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert(errorMessage)", true);
-        }
-
-        return contacts;
-    }
+    
 
 
     protected void BanButton_Click(object sender, EventArgs e)
     {
         string username = BanTXT.Text;
         
-        List<contact> contacts = getContacts();
+        List<contact> contacts = db.getContacts();
 
         for (int x = 0; x < contacts.Count; x++)
         {
@@ -158,7 +159,7 @@ public partial class _Default : System.Web.UI.Page
         {
             string username = AddTXT.Text;
 
-            List<contact> contacts = getContacts();
+            List<contact> contacts = db.getContacts();
 
             for (int x = 0; x < contacts.Count; x++)
             {
@@ -199,7 +200,36 @@ public partial class _Default : System.Web.UI.Page
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('user doesn't exist')", true);
         }
 
+
+    protected void changeInfoButton_Click(object sender, EventArgs e)
+    {
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            try
+            {
+                string insertData = "update contacts set password = @password where username = @username;";
+                MySqlCommand command = new MySqlCommand(insertData, connection);
+
+                command.Parameters.AddWithValue("@username", username.ToLower());
+                command.Parameters.AddWithValue("@password", PasswordTxt.Text);
+
+                connection.Open();
+                int result = command.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                string error = "Connection to SQL server failed!Message:" + ex.Message;
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('" + error + "')", true);
+                string x = ex.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
     }
+}
 //}
 class admin
 {
@@ -210,17 +240,5 @@ class admin
     {
         this.username = username;
         this.level = level;
-    }
-}
-
-class contact
-{
-    public string username;
-    public string password;
-
-    public contact(string username, string password)
-    {
-        this.username = username;
-        this.password = password;
     }
 }

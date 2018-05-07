@@ -40,8 +40,12 @@ public partial class _Default : System.Web.UI.Page
                 //add all postInfo data from db to dt
                 dt = db.allPostsInfoDT(id);
 
-                //add post inital string
                 Post initialPost = db.getPost(id);
+
+                //add title
+                postTitle.InnerText = initialPost.postSubject;
+
+                //add post inital strings
                 DataRow dr = dt.NewRow();
                 dr["replyString"] = initialPost.postString;
                 dr["replyUsername"] = initialPost.username;
@@ -106,22 +110,5 @@ public partial class _Default : System.Web.UI.Page
             }
         }
 
-    }
-}
-
-
-class postInfo
-{
-    public string replyString;
-    public string replyDate;
-    public string replyUsername;
-    public int postID;
-
-    public postInfo(string replyString, string replyDate, string replyUsername, int postID)
-    {
-        this.replyString = replyString;
-        this.replyDate = replyDate;
-        this.replyUsername = replyUsername;
-        this.postID = postID;
     }
 }
